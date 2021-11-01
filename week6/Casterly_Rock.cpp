@@ -1,3 +1,4 @@
+///3
 #include <iostream>
 #include <CGAL/QP_models.h>
 #include <CGAL/QP_functions.h>
@@ -6,14 +7,14 @@
 #include <algorithm>
 #include <vector>
 using namespace std;
-typedef int IT;
+typedef long IT;
 typedef CGAL::Gmpz ET;
 typedef CGAL::Quadratic_program<IT> Program;
 typedef CGAL::Quadratic_program_solution<ET> Solution;
 
 int t, n, m;
 long s;
-const int a = 0, b= 1, c = 2, d = 3, l = 4;
+
 
 void solve(){
     cin >> n >> m >> s;
@@ -23,7 +24,7 @@ void solve(){
     int number_of_constraints = 0;
     long noble_sum_x = 0, noble_sum_y = 0;
     Program lp (CGAL::SMALLER, false, 0, false, 0);
-
+    const int a = 0, b= 1, c = 2, d = 3, l = 4;
     for(int i = 0; i < n; i++){
         cin >> nobles[i].first >> nobles[i].second;
         noble_sum_x += nobles[i].first;
@@ -43,10 +44,9 @@ void solve(){
         lp.set_a(c, number_of_constraints, -1);
         number_of_constraints++;
     }
-    Solution sol = CGAL::solve_linear_program(lp, ET());
     // set a = 1 to simplify the second constraint
     lp.set_l(a, true, 1); lp.set_u(a, true, 1);
-    
+    Solution sol = CGAL::solve_linear_program(lp, ET());
     if(sol.is_infeasible()) {cout << "Yuck!\n"; return;}
 
     if(s != -1){
