@@ -68,6 +68,7 @@ int main(){
                 }
             }
         }
+        
         vector<vertex_desc> predMap(infinite+1);
         vector<long> weightToPredecessorMap(infinite+1);
         boost::prim_minimum_spanning_tree(G, 
