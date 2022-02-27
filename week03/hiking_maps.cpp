@@ -94,7 +94,10 @@ void solve(){
         // break if all triangles are searched
         if (legs_cnt[head_leg_id] + 1 >= triangle_list[head_leg_id].size()) break;
         else{
+            // the next legal triangle id of the leg for the head
             int next_triangle_id = triangle_list[head_leg_id][ legs_cnt[head_leg_id] + 1 ];
+            // there exist a legal triangle after the current one for the head
+            // that legal triangle 
             move_head = head_tri_id < next_triangle_id && next_triangle_id <= tail_tri_id;
         }
         if(move_head){

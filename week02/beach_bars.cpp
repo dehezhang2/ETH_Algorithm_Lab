@@ -1,3 +1,4 @@
+///3
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -20,8 +21,9 @@ int main(){
         min_dist = 200;
         while(head < n && tail < n){
 
-            int cnt = tail - head + 1, pos = (loc[tail] + loc[head])/2, diff = loc[tail] - loc[head];
+            int cnt = tail - head + 1, diff = loc[tail] - loc[head];
             int dist = diff%2 ? diff/2 + 1 : diff/2;
+            int pos = dist + loc[head];
 
             if(cnt > max_cnt || (cnt == max_cnt && dist <= min_dist)){
                 
@@ -31,8 +33,8 @@ int main(){
                 }
                 
                 max_cnt = cnt; 
+                if(diff%2) res.push_back(pos - 1);
                 res.push_back(pos);
-                if(diff%2) res.push_back(pos + 1);
             }
             if(loc[tail+1] - loc[head]<=200 && tail < n - 1 ) tail++;
             else head++;

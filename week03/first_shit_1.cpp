@@ -1,75 +1,70 @@
-#include <iostream>
+///1
+#include<iostream>
 #include <vector>
 #include <algorithm>
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
-
+#include <stdint.h>
 typedef CGAL::Exact_predicates_exact_constructions_kernel K;
 typedef K::Point_2 P;
 typedef K::Segment_2 S;
 typedef K::Ray_2 R;
-
+typedef K::FT FT;
 using namespace std;
 
-double floor_to_double(const K::FT& x) {
+int n;
+int64_t x, y, a, b;
+bool have_intersect, have_better_intersect;
+ 
+double floor_to_double(const FT& x) {
     double a = std::floor(CGAL::to_double(x));
     while (a > x) a -= 1;
     while (a+1 <= x) a += 1;
     return a;
 }
 
-int main(int argc, char const *argv[]) {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+  while((cin >> n) && n){
+    cin >> x >> y >> a >> b;
+    P start(x, y), end(a, b);
+    R ray(start, end);
+    S best_segment;
+    P intersect_point;
 
-    int n;
-    cin >> n;
-    while (n != 0) {
-        long int a, b, c ,d;
-        cin >> a >> b >> c >> d;
-        P start(a, b), point(c, d);
-        R philip(start, point);
-        S philip_seg;
+    have_intersect = 0;
+    vector<S> segments;
+    FT min_distance = -1;
 
-        vector<S> segments;
-        for(int i = 0; i < n; i++) {
-            cin >> a >> b >> c >> d;
-            S s(P(a, b), P(c, d));
-            segments.push_back(s);
-        }
-        random_shuffle(segments.begin(), segments.end());
-
-        bool intersect = false;
-        P best_intersection;
-        K::FT best_distance = -1;
-        for(int i = 0; i < n; i++) {
-            S s = segments[i];
-            bool this_intersect;
-            if(intersect) this_intersect = CGAL::do_intersect(philip_seg, s);
-            else this_intersect = CGAL::do_intersect(philip, s);
-            if(this_intersect) {
-                intersect = true;
-                P intersection;
-                auto o = CGAL::intersection(philip,s);
-                if (const P* op = boost::get<P>(&*o))
-                    intersection = *op;
-                else if (const S* os = boost::get<S>(&*o)) {
-                    if(CGAL::squared_distance(start, os->source()) < CGAL::squared_distance(start, os->target())) intersection = os->source();
-                    else intersection = os->target();
-                }
-                if(CGAL::squared_distance(intersection, start) < best_distance || best_distance == -1) {
-                    best_distance = CGAL::squared_distance(intersection, start);
-                    S segm(start, intersection);
-                    philip_seg = segm;
-                }
-            }
-        }
-
-        if(!intersect) cout << "no\n";
-        else {
-            cout << setiosflags(ios::fixed) << setprecision(0) << floor_to_double(philip_seg.target().x()) << " " << floor_to_double(philip_seg.target().y()) << "\n";
-        }
-
-        cin >> n;
+    for(int i = 0; i < n; i++){
+      cin >> x >> y >> a >> b;
+      S segment(P(x, y), P(a, b));
+      segments.push_back(segment);
     }
-    
+    random_shuffle(segments.begin(), segments.end());
+
+    for(int i = 0; i < n; i++){
+        have_better_intersect = 0;
+        if(have_intersect) have_better_intersect = CGAL::do_intersect(segments[i], best_segment);
+        else have_better_intersect = CGAL::do_intersect(segments[i], ray);
+        if(have_better_intersect){
+            have_intersect = 1;
+            auto o = CGAL::intersection(ray,segments[i]);
+            if (const P* op = boost::get<P>(&*o))
+                intersect_point = *op;
+            else if (const S* os = boost::get<S>(&*o)) {
+                if(CGAL::squared_distance(start, os->source()) < CGAL::squared_distance(start, os->target())) intersect_point = os->source();
+                else intersect_point = os->target();
+            }
+            S seg(start, intersect_point);
+            best_segment = seg;
+        }
+    }
+
+    if(!have_intersect) cout << "no\n";
+    else  cout << fixed << setprecision(0) << floor_to_double(intersect_point.x()) << " " << floor_to_double(intersect_point.y()) << endl;
+
+
+  }
+  return 0;
 }

@@ -31,7 +31,7 @@ void precompute(Triangulation& tri){
         if(tri.is_infinite(face)){
             q.push(make_pair(LONG_MAX, face));
             face->info() = LONG_MAX;
-        } else{
+        } else {
             Point outheart = tri.dual(face);
             FT distance = CGAL::squared_distance(outheart, face->vertex(0)->point());
             q.push(make_pair(distance, face));
@@ -53,7 +53,6 @@ void precompute(Triangulation& tri){
                 q.push(make_pair(new_distance, next_face));
                 next_face->info() = new_distance;
             }
-
         }
     }
 
@@ -70,7 +69,7 @@ void solve(){
     precompute(tri);
 
     for(int i = 0; i < m; i++){
-        long x, y;FT s; cin >> x >> y >> s;
+        long x, y; FT s; cin >> x >> y >> s;
         Point ballon = Point(x, y);
         FT radii = r+s;
         Point closest = tri.nearest_vertex(ballon)->point();

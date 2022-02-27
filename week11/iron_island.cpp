@@ -37,7 +37,7 @@ void solve(){
     unordered_map<int, int> max_result_for_num_of_men;
     std::vector<int> cost_of_num_island;
     cost_of_num_island.reserve(n);
-    for(auto& waterway:waterways){
+    for(auto& waterway : waterways){
         cost_of_num_island.resize(1);
         for(int i = 1, sum = 0; i < (int)waterway.size(); i++){
             sum += costs[waterway[i]];

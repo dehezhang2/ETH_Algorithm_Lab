@@ -2,6 +2,191 @@
 
 Code and assessment of Algorithm Labs
 
+## Useful Codes
+
+* Sliding Window
+
+  ```c++
+  // [) interval
+  int head = 0, tail = 1, sum = cards[head], best_val = INT_MAX;
+  pair<int, int> solution = make_pair(head, tail-1);
+  while(true){
+      int val = abs(sum - k);
+      if(val < best_val){
+          best_val = val;
+          solution = make_pair(head, tail-1);
+      }
+  	if(sum==k) break;
+  	if(sum < k){
+  		if(tail==cards.size()) break;
+      sum += cards[tail++];
+    } else {
+      sum -= cards[head++];
+    }
+  }
+  ```
+
+  ```c++
+  int sliding_window(vector<int>& costs, vector<int>& water_way, int query){
+      int left = 0, right = 0, max_result = -1, sum = 0;
+      while(true){
+          int num_of_island = right - left;
+          if(sum==query){
+              max_result = max(max_result, num_of_island);
+              sum -= costs[water_way[left++]];
+          }
+          else if(sum < query ){
+              if(right == (int)water_way.size()) break;
+              sum += costs[water_way[right++]];
+          } else {
+              sum -= costs[water_way[left++]];
+          }
+      }
+      return max_result;
+  }
+  ```
+
+* Binary search
+
+  * upperbound
+
+    ```c++
+    while(l < r){
+            int mid = (l + r + 1)/2;
+            c_map[boost::edge(v_src, k, G).first] = mid;
+            if(feasible(G, v_src, v_tar, mid)){
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+    ```
+
+  * Lower bound
+
+    
+
+* Lambda:
+
+  ```c++
+  void preprocess(vector<Chamber>& chamber_list, int chamber_id){
+      for(auto child : chamber_list[chamber_id].child_list){
+          preprocess(chamber_list, child.first);
+          chamber_list[chamber_id].number_of_node += chamber_list[child.first].number_of_node;
+          chamber_list[chamber_id].time_cost += child.second + chamber_list[child.first].time_cost;
+      }
+      sort(chamber_list[chamber_id].child_list.begin(), chamber_list[chamber_id].child_list.end(),
+          [&chamber_list, chamber_id](auto& left, auto& right)-> bool {
+              long time_cost1 = chamber_list[left.first].time_cost + left.second;
+              long number_of_node1 = chamber_list[left.first].number_of_node;
+              long time_cost2 = chamber_list[right.first].time_cost + right.second;
+              long number_of_node2 = chamber_list[right.first].number_of_node;
+              return time_cost1 * number_of_node2 < time_cost2 * number_of_node1;
+          }
+      );
+  }
+  ```
+
+* CGAL:
+
+  * Check Intersection: `CGAL::do_intersect`
+
+  * Find Intersection: 
+
+    ```c++
+    auto o = CGAL::intersection(ray,segments[i]);
+    if (const P* op = boost::get<P>(&*o))
+    	intersect_point = *op;
+    else if (const S* os = boost::get<S>(&*o)) {
+    	if(CGAL::squared_distance(start, os->source()) < CGAL::squared_distance(start, os->target())) 
+      	intersect_point = os->source();
+    	else intersect_point = os->target();
+    }
+    ```
+
+  * squared distance: `CGAL::squared_distance`
+
+  * check the cross product: `Line.oriented_side(Point)`
+
+  * Floor to double and output:
+
+    ```c++
+    double floor_to_double(const K::FT& x) {
+        double a = floor(CGAL::to_double(x));
+        while (a > x) a -= 1;
+        while (a+1 <= x) a += 1;
+        return a;
+    }
+    double ceil_to_double(const K::FT& x){
+        double a = ceil(CGAL::to_double(x));
+        while (a < x) a += 1;
+        while (a-1 >= x) a -= 1;
+        return a;
+    }
+    cout << fixed << setprecision(0) <<...<< endl;
+    ```
+
+* Triangulation:
+
+  * BFS construction
+
+    ```c++
+    void BFS_construction(Vh vertex, Triangulation& tri, graph& G){
+        set<Vh> visited;
+        vector<Vh> queue; queue.push_back(vertex); visited.insert(vertex);
+        while(!queue.empty()){
+            auto next_vertex = queue[queue.size() - 1]; queue.pop_back();
+            if(next_vertex != vertex) boost::add_edge(vertex->info(), next_vertex->info(), G);
+            auto neighbor = next_vertex->incident_vertices();
+            
+            do {
+                if (!tri.is_infinite(neighbor) && visited.find(neighbor) == visited.end() && CGAL::squared_distance(vertex->point(), neighbor->point()) <= r_square) {
+                    visited.insert(neighbor);
+                    queue.push_back(neighbor);
+                }
+            } while(++neighbor != next_vertex->incident_vertices());
+        }
+    }
+    ```
+
+  * Dijkstra construction
+
+    ```c++
+    void precompute(Triangulation& tri){
+        priority_queue< pair<FT, Face> > q;
+        for(auto face = tri.all_faces_begin(); face != tri.all_faces_end(); face++){
+            if(tri.is_infinite(face)){
+                q.push(make_pair(LONG_MAX, face));
+                face->info() = LONG_MAX;
+            } else {
+                Point outheart = tri.dual(face);
+                FT distance = CGAL::squared_distance(outheart, face->vertex(0)->point());
+                q.push(make_pair(distance, face));
+                face->info() = distance;
+            }
+        }
+    
+        while(!q.empty()){
+            FT distance = q.top().first;
+            Face current_face = q.top().second;
+            q.pop();
+            // current face is updated by another better face
+            if(distance < current_face->info()) continue;
+            for(int i = 0; i < 3; i++){
+                Face next_face = current_face->neighbor(i);
+                FT edge_length = tri.segment(current_face, i).squared_length();
+                FT new_distance = min(current_face->info(), edge_length);
+                if(new_distance > next_face->info()){
+                    q.push(make_pair(new_distance, next_face));
+                    next_face->info() = new_distance;
+                }
+            }
+        }
+    }
+    ```
+
+  * 
+
 ## Assessment 1: From Russia with Love
 
 ### Problem Definition

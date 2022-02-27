@@ -26,7 +26,7 @@ int main(){
         if(p==1){
           Program lp (CGAL::SMALLER, true, 0, false, 0);
           lp.set_a(X, 0, 1); lp.set_a(Y, 0, 1); lp.set_b(0, 4);   // x + y <= 4
-          lp.set_a(X, 1, 4); lp.set_a(Y, 1, 2); lp.set_b(1, a*b); // 4x + 2y <= 1
+          lp.set_a(X, 1, 4); lp.set_a(Y, 1, 2); lp.set_b(1, a*b); // 4x + 2y <= ab
           lp.set_a(X, 2, -1); lp.set_a(Y, 2, 1); lp.set_b(2, 1);  // -x + y <= 1
           lp.set_c(X, a); // ax
           lp.set_c(Y, -b); // -by

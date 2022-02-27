@@ -45,6 +45,7 @@ void solve(){
       player_list.push_back({y0, slope, CGAL::abs(slope), i});
     }
     sort(player_list.begin(), player_list.end(), by_intercept);
+    
     vector<Player> result_list;
     result_list.push_back(player_list[0]);
     for(int i = 1; i < n; i++){
@@ -56,7 +57,7 @@ void solve(){
                 beated = 1;
                 break;
             } else {
-               result_list.erase(result_list.begin()+j);
+                result_list.erase(result_list.begin()+j);
             }
         }
         if(!beated)result_list.push_back(player_list[i]);

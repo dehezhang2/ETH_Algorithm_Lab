@@ -29,7 +29,7 @@ void solve(){
     int light_kills_all = -1;
 
     for(int i = 0; i < m; i++){
-        auto closest_light = t.nearest_vertex(peoples[i].first)->handle()->point();
+        auto closest_light = t.nearest_vertex(peoples[i].first)->point();
         long int threshold = pow(h + peoples[i].second, 2);
         if(CGAL::squared_distance(closest_light, peoples[i].first) >= threshold){
             // at least one survived

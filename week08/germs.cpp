@@ -37,8 +37,6 @@ int main(){
             if(e!=0){
                 do {
                     if (!t.is_infinite(e)) {
-                        Triangulation::Vertex_handle v1 = (e->first)->vertex((e->second + 1) % 3);
-                        Triangulation::Vertex_handle v2 = (e->first)->vertex((e->second + 2) % 3);
                         double dist = t.segment(e).squared_length();
                         min_dist = min(dist, min_dist);
                     }

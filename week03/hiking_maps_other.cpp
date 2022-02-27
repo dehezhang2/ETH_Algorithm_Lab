@@ -1,142 +1,101 @@
 #include <iostream>
 #include <vector>
-#include <limits>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Triangle_2.h>
-
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef K::Point_2 P;
-typedef K::Line_2 L;
-typedef K::FT FT;
-typedef K::Triangle_2 T;
+#include <climits>
+#include <algorithm>
 
 using namespace std;
 
-struct wordIndex {
-    int index;
-    int word;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+typedef K::Point_2 P;
+typedef K::Segment_2 S;
+typedef K::Line_2 L;
 
-    bool operator<(const wordIndex &rhs) {
-        return index < rhs.index;
-    }
-};
+void runTest(){
+    int m,n;
+    cin >> m >> n;
 
-void solve() {
-  int m, n; cin >> m; cin >> n;
-  vector<P> pos;
-  pos.reserve(m);
-  int x, y;
-  for (int i = 0; i < m; ++i) {
-    cin >> x; cin >> y;
-    pos.push_back(P(x, y));
-  }
-  
-  vector<T> t;
-  t.reserve(n);
-  
-  vector<vector<int>> p(m - 1, vector<int>());
-  vector<wordIndex> wordIndices;
-  int lastWordIndex = 0;
-  
-  int px, py, qx, qy;
-  L l1, l2, l3;
-  P p1, q1, p2, q2, p3, q3;
-  
-  for (int i = 0; i < n; ++i) {
-    cin >> px; cin >> py; cin >> qx; cin >> qy;
-    p1 = P(px, py); 
-    q1 = P(qx, qy);
-    cin >> px; cin >> py; cin >> qx; cin >> qy;
-    p2 = P(px, py); 
-    q2 = P(qx, qy);
-    cin >> px; cin >> py; cin >> qx; cin >> qy;
-    p3 = P(px, py); 
-    q3 = P(qx, qy);
-    
-    l1 = L(p1, q1);
-    l2 = L(p2, q2);
-    l3 = L(p3, q3);
-    
-    if (l1.oriented_side(p2) < 0) {
-      l1 = L(q1, p1);
-    }
-    if (l2.oriented_side(p1) < 0) {
-      l2 = L(q2, p2);
-    }
-    if (l3.oriented_side(p2) < 0) {
-      l3 = L(q3, p3);
-    }
-    
-    vector<bool> pointInside(m);
-    for (int j = 0; j < m; ++j) {
-      auto side1 = l1.oriented_side(pos[j]);
-      auto side2 = l2.oriented_side(pos[j]);
-      auto side3 = l3.oriented_side(pos[j]);
-      pointInside[j] = side1 >= 0 && side2 >= 0 && side3 >= 0;
-    }
-    
-    for (int j = 0; j < m-1; ++j) {
-      bool inside = pointInside[j] && pointInside[j + 1];
-      if (inside) {
-        p[j].push_back(i);
-        wordIndices.push_back(wordIndex{i, j});
-      }
-    }
+    vector<P> hiking_points;
+    for (int i =0; i<m;i++){
+        int x,y; cin>>x>>y;
+        hiking_points.push_back(P(x,y));
+    } 
 
-  }
-  
-  int w = wordIndices.size();
-  int minLength = numeric_limits<int>::max();
+    vector<vector<bool>> maps_points(n,vector<bool>(m,false));
+    for(int i =0; i<n;i++){
+        int x11,y11,x12,y12,x21,y21,x22,y22,x31,y31,x32,y32;
+        cin >>x11>>y11>>x12>>y12
+            >>x21>>y21>>x22>>y22
+            >>x31>>y31>>x32>>y32;
+        P p11(x11,y11),p12(x12,y12),
+          p21(x21,y21),p22(x22,y22),
+          p31(x31,y31),p32(x32,y32); //ideally clockwise
 
-  // p[j] represents the list of triangles contains leg j
-  // head = 0, tail = lastwordindex
-  for (int j = 0; j < m-1; ++j) {
-    lastWordIndex = max(lastWordIndex, p[j][0]);
-  }
-  sort(wordIndices.begin(), wordIndices.end());
-  
-  int i = 0;
-  int j = 0;
-  vector<int> pi(m - 1, 0);
+        if (!CGAL::right_turn(p11,p12,p21)) swap(p11,p12);
+        if (!CGAL::right_turn(p21,p22,p31)) swap(p21,p22);
+        if (!CGAL::right_turn(p31,p32,p11)) swap(p31,p32);
 
-  // Move j to first position, where all words are covered
-  // wordIndices[j] represents the j-th pair(triangle_id, leg_id)
-  while (j + 1 < w && wordIndices[j + 1].index <= lastWordIndex) {
-      ++j;
-  }
-
-  while (i < w && j < w) {
-        wordIndex a = wordIndices[i];
-        wordIndex b = wordIndices[j];
-        int length = b.index - a.index + 1;
-        minLength = min(minLength, length);
-
-        // Check if moving i is allowed
-        bool moveI = true;
-        int word = a.word;
-        if (pi[word] + 1 >= p[word].size()) {
-            // Already last occurrence of word
-            break;
-        } else {
-            int nextWordIndex = p[word][pi[word] + 1];
-            moveI = a.index < nextWordIndex && nextWordIndex <= b.index;
-        }
-
-        if (moveI) {
-            ++i;
-            pi[word] += 1;
-        } else {
-            ++j;
+        for (int j=0;j<m;j++){
+            bool b1,b2,b3;
+            b1 = CGAL::right_turn(p11,p12,hiking_points[j])||CGAL::collinear(p11,p12,hiking_points[j]);
+            b2 = CGAL::right_turn(p21,p22,hiking_points[j])||CGAL::collinear(p21,p22,hiking_points[j]);
+            b3 = CGAL::right_turn(p31,p32,hiking_points[j])||CGAL::collinear(p31,p32,hiking_points[j]);
+            maps_points[i][j] = b1&&b2&&b3;
         }
     }
-    cout << minLength << endl;
 
+    vector<vector<int>> maps_legs(n,vector<int>());
+    for (int i =0; i<n;i++){
+        for(int j=0;j<m-1;j++){
+            if(maps_points[i][j]&&maps_points[i][j+1])
+                maps_legs[i].push_back(j);
+        }
+    }
+    // maps_legs[i]: list of legs contained by triangle i
+    int l = 0, r = 0;
+    int count =0;
+    int res = n+2;
+    // how many time the leg is contained in current interval
+    vector<int> legs_count(m-1,0);
+
+    for(int leg:maps_legs[0]){
+        count += 1;
+        legs_count[leg] += 1;
+    }
+    if (r-l+1 < res && count==m-1){
+        res = r-l+1;
+    }
+
+    while (l < n && r < n && l <= r){
+        if (count < m-1){
+            if (r + 1 < n){
+                r++;
+                for(int leg:maps_legs[r]){
+                    if (legs_count[leg]==0) count ++;
+                    legs_count[leg]++;
+                }
+            }
+        }
+        else if (count = m-1){
+                for(int leg:maps_legs[l]){
+                    legs_count[leg]--;
+                    if (legs_count[leg]==0) count --;
+                }
+                l++;
+
+        }
+
+        if (r-l+1 < res && count==m-1){
+            res = r-l+1;
+        }
+    }
+    cout << res <<endl;
 }
 
-int main() {
-  ios_base::sync_with_stdio(false);
-  int t; cin >> t;
-  for (int i = 0; i < t; ++i) {
-    solve();
-  }
+int main(){
+    ios_base::sync_with_stdio(false);
+    int c; cin >> c;
+    for (int i =0; i<c;i++){
+        runTest();
+    }
 }

@@ -42,6 +42,7 @@ void addEdge_BFS(Vh vertex, Triangulation& tri, graph& G){
         auto next_vertex = queue[queue.size() - 1]; queue.pop_back();
         if(next_vertex != vertex) boost::add_edge(vertex->info(), next_vertex->info(), G);
         auto neighbor = next_vertex->incident_vertices();
+        
         do {
             if (!tri.is_infinite(neighbor) && visited.find(neighbor) == visited.end() && CGAL::squared_distance(vertex->point(), neighbor->point()) <= r_square) {
                 visited.insert(neighbor);

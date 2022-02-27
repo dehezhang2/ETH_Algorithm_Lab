@@ -35,7 +35,6 @@ int main(){
             }
         }
         Solution s = CGAL::solve_linear_program(lp, ET());
-
         if(s.is_infeasible()){
             cout << "No such diet.\n";
         } else {

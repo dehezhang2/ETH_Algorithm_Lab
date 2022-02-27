@@ -16,6 +16,7 @@ struct Item{
 };
 
 void convert(){
+    // [) interval
     int head = 0, tail = 0, cnt = 0;
     while(head < n && tail < n){
         while(cnt < k && tail < n) cnt += v[tail++];
