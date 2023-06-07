@@ -1,6 +1,42 @@
 # ETH_Algorithm_Lab
 
-Code and assessment of Algorithm Labs
+Code and assessment of the course Algorithm Labs. There is one problem of the week (PoW) and multiple problems during the week. The codes are implemented in C++. 
+
+Note that only problems more (or equal) than 3 sub-questions will be tested in the final exam. So I label these more important questions with bold style in the division table.
+
+## Divide by Week
+
+| Week |                              Q1                              |                       Q2                        |                        Q3                        |                        Q4                         |                             PoW                              |
+| :--: | :----------------------------------------------------------: | :---------------------------------------------: | :----------------------------------------------: | :-----------------------------------------------: | :----------------------------------------------------------: |
+|  1   |           [Build the Sum](./week01/build_the_sum)            |          [Dominoes](./week01/dominoes)          |      **[Even Pairs](./week01/even_pairs)**       |    **[Even Matrices](./week01/even_matrices)**    |                                                              |
+|  2   |            **[Beach Bars](./week02/beach_bars)**             |   **[Buring Coins](./week02/burning_coins)**    |  **[The Great Game](./week02/the_great_game)**   |   **[Defensive Line](./week02/defensive_line)**   |         **[Deck of Cards](./week02/deck_of_cards)**          |
+|  3   |               [First Hit](./week03/first_hit)                |               [Hit](./week03/hit)               |           [Antenna](./week03/antenna)            |        [Hiking Maps](./week03/hiking_maps)        | **[From Russia with Love](./week03/from_russia_with_love)**  |
+|  4   |     [First Step with BGL](./week04/first_step_with_bgl)      | [Important Bridges](./week04/important_bridges) | **[Buddy Selection](./week04/buddy_selection)**  |    **[Ant Challenge](./week04/ant_challenge)**    | **[Fighting Pits of Meereen](./week04/fighting_pits_of_meereen)** |
+|  5   |                 **[Boats](./week05/boats)**                  |    **[Moving Books](./week05/moving_books)**    |   **[Severus Snape](./week05/severus_snape)**    | **[Asterix the Gaul](./week05/asterix_the_gaul)** |            **[Motocycles](./week05/motocycles)**             |
+|  6   |         [What is the Maximum](./week06/maximize_it)          |              [Diet](./week06/diet)              |            [Inball](./week06/inball)             |      **[Lannister](./week06/casterly_rock)**      |        **[Planet Express](./week06/planet_express)**         |
+|  7   |              [Shopping Trip](./week07/shopping)              |         **[Knights](./week07/knights)**         | [Coin Tossing Tournament](./week07/coin_tossing) |           **[London](./week07/london)**           |             **[Octopussy](./week07/octopussy)**              |
+|  8   |                   [Germs](./week08/germs)                    |            [Bistro](./week08/bistro)            |            **[H1N1](./week08/h1n1)**             |    [Light the Stage](./week08/light_the_stage)    |                  **[Suez](./week08/suez)**                   |
+|  9   |              **[Algocoon](./week09/algocoon)**               | **[Real Estate Market](./week09/real_estate)**  |         **[Canteen](./week09/canteens)**         |    [Placing Knights](./week09/placing_knights)    |       **[Kingdom_Defence](./week09/kingdom_defence)**        |
+|  10  |  **[Asterix and the Chariot Race](./week10/chariot_race)**   |         [Evolution](./week10/evolution)         |        **[WorldCup](./week10/world_cup)**        | **[Asterix in Swizerland](./week10/swizerland)**  |            **[Golden Eye](./week10/golden_eye)**             |
+|  11  |         **[The Iron Islands](./week11/iron_island)**         |     **[Return of the Jedi](./week11/jedi)**     |          **[Idefix](./week11/idefix)**           |          **[Legions](./week11/legions)**          |        **[Phantom Menace](./week11/phantom_menace)**         |
+|  12  | **[On Her Majesty’s Secret Service](./week12/secret_service)** |       **[Hong Kong](./week12/hongkong)**        |     **[Car Sharing](./week12/car_sharing)**      |      **[Bonus Level](./week12/bonus_level)**      |          **[San Francisco](./week12/sanfrancisco)**          |
+|  13  |                  **[Hand](./week13/hand)**                   |          **[Hagrid](./week13/hagrid)**          |             [Punch](./week13/punch)              |         **[Ludo Bagman](./week13/ludo)**          |                 **[Clues](./week13/clues)**                  |
+|  14  |                                                              |                                                 |                                                  |                                                   |                 **[India](./week14/india)**                  |
+
+## Divide by Topic
+
+| Topic               | Questions                                                    |
+| :------------------ | :----------------------------------------------------------- |
+| Dynamic Programming | **[Bonus Level](./week12/bonus_level)**, **[Asterix and the Chariot Race](./week10/chariot_race)**, **[Even Matrices](./week01/even_matrices)**, **[Fighting Pits of Meereen](./week04/fighting_pits_of_meereen)**, **[From Russia with Love](./week03/from_russia_with_love)**, **[Hagrid](./week13/hagrid)**, **[San Francisco](./week12/sanfrancisco)**, **[The Great Game](./week02/the_great_game)** |
+| Linear Programming  | **[Lannister](./week06/casterly_rock)**, **[Legions](./week11/legions)**, **[Suez](./week08/suez)**, **[WorldCup](./week10/world_cup)** |
+| Sliding Window      | **[Beach Bars](./week02/beach_bars)**, **[Deck of Cards](./week02/deck_of_cards)**, **[Defensive Line](./week02/defensive_line)**, [Hiking Maps](./week03/hiking_maps), **[The Iron Islands](./week11/iron_island)** |
+| Greedy              | **[Asterix the Gaul](./week05/asterix_the_gaul)**, **[Boats](./week05/boats)**, **[Moving Books](./week05/moving_books)**, **[Severus Snape](./week05/severus_snape)** |
+| Graph               | **[Ant Challenge](./week04/ant_challenge)**, **[Buddy Selection](./week04/buddy_selection)**, **[Planet Express](./week06/planet_express)** |
+| Max Flow            | **[Algocoon](./week09/algocoon)**, **[Canteen](./week09/canteens)**, **[Car Sharing](./week12/car_sharing)**, **[India](./week14/india)**, **[Kingdom_Defence](./week09/kingdom_defence)**, **[Knights](./week07/knights)**, **[London](./week07/london)**, **[Ludo Bagman](./week13/ludo)**, **[Phantom Menace](./week11/phantom_menace)**, [Placing Knights](./week09/placing_knights), **[Real Estate Market](./week09/real_estate)**, **[Asterix in Swizerland](./week10/swizerland)** |
+| CGAL                | **[Motocycles](./week05/motocycles)**                        |
+| Triangulation       | **[Clues](./week13/clues)**, **[Golden Eye](./week10/golden_eye)**, **[H1N1](./week08/h1n1)**, **[Hand](./week13/hand)**, **[Hong Kong](./week12/hongkong)**, **[Idefix](./week11/idefix)**, [Light the Stage](./week08/light_the_stage) |
+
+
 
 ## Useful Codes
 
